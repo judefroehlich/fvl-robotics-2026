@@ -1,0 +1,20 @@
+# Keep line endings LF everywhere. Without this, Windows checkouts rewrite the
+# vendored kernel sources to CRLF and every teammate sees phantom whole-file diffs.
+* text=auto eol=lf
+
+# Makefiles run their recipes through sh; CRLF breaks them.
+Makefile    text eol=lf
+*.mk        text eol=lf
+*.ld        text eol=lf
+
+# Prebuilt kernel artifacts
+*.a     binary
+*.bin   binary
+*.elf   binary
+*.o     binary
+
+# Vendored PROS kernel and LVGL sources: exclude from language stats and
+# collapse them in diffs so team changes stay readable.
+include/pros/**     linguist-vendored
+include/liblvgl/**  linguist-vendored
+firmware/**         linguist-vendored
