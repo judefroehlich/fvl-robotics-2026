@@ -15,3 +15,8 @@ temp.log
 temp.errors
 *.ini
 .d/
+.clangd
+compile_flags.txt
+
+# docs build tooling (run: cd docs/.build && npm install)
+docs/.build/

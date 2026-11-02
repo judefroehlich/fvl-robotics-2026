@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{TITLE}}</title>
+<style>{{KATEX_CSS}}</style>
+<style>{{STYLES}}</style>
+</head>
+<body>
+<div class="progress" id="progress"></div>
+
+<button class="nav-toggle" id="navToggle" aria-label="Table of contents">
+  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12M2 8h12M2 12h12"/></svg>
+</button>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-head">
+    <strong>Contents</strong>
+    <div class="sidebar-tools">
+      <button id="expandAll" title="Expand all sections">Expand</button>
+      <button id="collapseAll" title="Collapse all sections">Collapse</button>
+    </div>
+  </div>
+  <div class="search-wrap">
+    <input type="search" id="search" placeholder="Filter sections…  (press /)" autocomplete="off" spellcheck="false">
+    <span class="search-count" id="searchCount"></span>
+  </div>
+  <nav><ul class="toc" id="toc">{{TOC}}</ul></nav>
+</aside>
+
+<main>
+  <header class="hero">
+    <h1>{{TITLE}}</h1>
+    <div class="lede">{{LEDE}}</div>
+    <div class="hero-meta">
+      <span id="readingTime"></span>
+      <button id="themeBtn" class="theme-btn" title="Switch theme"></button>
+    </div>
+  </header>
+
+  {{BODY}}
+
+  <footer class="page-foot">
+    <p>Generated from <code>CODE_EXPLAINED.md</code> by <code>docs/build.mjs</code>. Re-run it after editing the markdown.</p>
+  </footer>
+</main>
+
+<button class="to-top" id="toTop" title="Back to top" aria-label="Back to top">
+  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 10l4-4 4 4"/></svg>
+</button>
+
+<script>{{WIDGETS_JS}}</script>
+<script>{{APP_JS}}</script>
+</body>
+</html>
