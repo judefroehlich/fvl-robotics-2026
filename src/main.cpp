@@ -15,10 +15,17 @@ void bprint(int line, const char *fmt, Args... args) {
   screen::print(E_TEXT_MEDIUM, line, fmt, args...);
 }
 
+// main gears 36 teeth, large is 48, small is 12.
+
 // left motor group
-MotorGroup left_motor_group({1}, MotorGears::blue);
+MotorGroup left_motor_group({8, 9, 10}, MotorGears::blue);
 // right motor group
-MotorGroup right_motor_group({2}, MotorGears::blue);
+MotorGroup right_motor_group({-18, -19, -20}, MotorGears::blue);
+
+// blue motors only, used for odometry (the 5.5W motors spin at a different
+// speed)
+MotorGroup left_odom_motors({8, 10}, MotorGears::blue);
+MotorGroup right_odom_motors({-18, -20}, MotorGears::blue);
 
 // controller
 Controller controller(E_CONTROLLER_MASTER);
@@ -29,21 +36,26 @@ lemlib::Drivetrain
                &right_motor_group,         // right motor group
                10,                         // 10 inch track width
                lemlib::Omniwheel::NEW_325, // using new 3.25" omnis
-               360,                        // drivetrain rpm is 360
+               450,                        // drivetrain rpm is 450
                2                           // horizontal drift is 2 (for now)
     );
 
 // imu
-Imu imu(10);
+Imu imu(13);
+
+// tracking wheels built from the blue drive motors
+lemlib::TrackingWheel left_tracking_wheel(&left_odom_motors,
+                                          lemlib::Omniwheel::NEW_325, -5, 450);
+lemlib::TrackingWheel right_tracking_wheel(&right_odom_motors,
+                                           lemlib::Omniwheel::NEW_325, 5, 450);
 
 // odometry settings
-lemlib::OdomSensors sensors(
-    nullptr, // vertical tracking wheel 1, set to null
-    nullptr, // vertical tracking wheel 2, set to nullptr as we are using IMEs
-    nullptr, // horizontal tracking wheel 1
-    nullptr, // horizontal tracking wheel 2, set to nullptr as we don't have a
-             // second one
-    &imu     // inertial sensor
+lemlib::OdomSensors sensors(&left_tracking_wheel,  // vertical tracking wheel 1
+                            &right_tracking_wheel, // vertical tracking wheel 2
+                            nullptr, // horizontal tracking wheel 1
+                            nullptr, // horizontal tracking wheel 2, set to
+                                     // nullptr as we don't have a second one
+                            nullptr  //&imu // inertial sensor
 );
 
 // lateral PID controller
