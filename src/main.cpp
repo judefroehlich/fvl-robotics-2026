@@ -18,14 +18,14 @@ void bprint(int line, const char *fmt, Args... args) {
 // main gears 36 teeth, large is 48, small is 12.
 
 // left motor group
-MotorGroup left_motor_group({8, 9, 10}, MotorGears::blue);
+MotorGroup right_motor_group({-8, -9, -10}, MotorGears::blue);
 // right motor group
-MotorGroup right_motor_group({-18, -19, -20}, MotorGears::blue);
+MotorGroup left_motor_group({17, 19, 18}, MotorGears::blue);
 
 // blue motors only, used for odometry (the 5.5W motors spin at a different
 // speed)
-MotorGroup left_odom_motors({8, 10}, MotorGears::blue);
-MotorGroup right_odom_motors({-18, -20}, MotorGears::blue);
+MotorGroup right_odom_motors({-8, -10}, MotorGears::blue);
+MotorGroup left_odom_motors({18, 17}, MotorGears::blue);
 
 // controller
 Controller controller(E_CONTROLLER_MASTER);
@@ -60,7 +60,7 @@ lemlib::OdomSensors sensors(&left_tracking_wheel,  // vertical tracking wheel 1
 
 // lateral PID controller
 lemlib::ControllerSettings
-    lateral_controller(10,  // proportional gain (kP)
+    lateral_controller(6,   // proportional gain (kP)
                        0,   // integral gain (kI)
                        3,   // derivative gain (kD)
                        3,   // anti windup
@@ -104,6 +104,7 @@ lemlib::Chassis chassis(drivetrain, lateral_controller, angular_controller,
 
 // initialize function. Runs on program startup
 void initialize() {
+  bprint(5, "version 2");
   printf("On\n");
   chassis.calibrate(); // calibrate sensors
   // print position to brain screen
